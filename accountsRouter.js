@@ -31,6 +31,33 @@ router.post('/', validatePost, (req, res) => {
         })
 })
 
+router.put('/:id', (req,res) => {
+    const { id } = req.params;
+    const updates = req.body;
+
+    db('accounts').where({ id }).update(updates)
+        .then(account => {
+            res.status(200).json(account)
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({error: `error updating the user's account!`})
+        });
+})
+
+router.delete('/:id', (req,res) => {
+    const { id } = req.params;
+    db('accounts').where({ id }).delete(id)
+        .then(deletedAccount => {
+            res.status(204).json(deletedAccount)
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({error: `error deleting the account!`})
+        });
+})
+
+
 function validatePost(req, res, next) {
     const { name } = req.body;
     const { budget } = req.body;
