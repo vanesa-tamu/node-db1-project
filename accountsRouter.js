@@ -9,4 +9,12 @@ router.get('/', (req,res) => {
         .catch(error => res.status(500).json({message: `error in retrieveing accounts`}))
 })
 
+router.get('/:id', (req,res) => {
+    const { id } = req.params
+    db('accounts').where({ id })
+        .then(account => {
+            res.status(200).json(account[0])
+        })
+        .catch(error => res.status(500).json({message: `error in retrieveing specific account`}))
+})
 module.exports = router;
